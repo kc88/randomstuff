@@ -5,7 +5,8 @@ class LargeNumberLowPrecision { //playing loose and fast with the rules of mathe
 	
 	private static final int precision = 10;
 	
-	public LNLP (e, v){
+	public LNLP (e, v) throws ValueError {
+		if (v < 0) throw new ValueError(); //uhhh not sure of c#'s syntax here'
 		exponent, value = e, v;
 		while value > 10 {
 			value /= 10;
