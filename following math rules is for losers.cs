@@ -1,4 +1,5 @@
 class LargeNumberLowPrecision { //playing loose and fast with the rules of mathematics
+	//fyi does not support negative numbers - things will crash
 	int exponent { public get; private set; }
 	double value { public get; private set; }
 	
@@ -36,11 +37,19 @@ class LargeNumberLowPrecision { //playing loose and fast with the rules of mathe
 			return new LNLP(high.exponent, high.value);
 		
 		int magnitude_dif = high.exponent - low.exponent;
-		LNLP low_scaled = new LNLP(high.exponent, low.value / pow(10, magnitude_dif));
+		return new LNLP(high.exponent, high.value + low.value / pow(10, magnitude_dif));
 	}
 	
 	public static Subtract (a, b) {
-		return Add(a, new LNLP(b.exponent, -1*b.value));
+		if (b.exponent > a.exponent) return 0;//no negative numbers please
+		
+		LNLP low = a.exponent > b.exponent ? b : a;
+		
+		if (high.exponent - precision > low.exponent)
+			return new LNLP(high.exponent, high.value);
+		
+		int magnitude_dif = high.exponent - low.exponent;
+		return new LNLP(high.exponent, high.value - low.value / pow(10, magnitude_dif));
 	}
 	
 	public static Pow(a, b) {
