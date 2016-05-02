@@ -14,6 +14,7 @@ class LargeNumberLowPrecision { //playing loose and fast with the rules of mathe
 			value *= 10;
 			exponent--;
 		}
+		//might have rounding errors for numbers that are very far off from the 1-10 scale before clamping
 		//above scales value to 1.00 thru 9.99 and changes exponent to fit
 		value = Math.Round(value, precision-1); //round to precision-1 decimal places. docs https://msdn.microsoft.com/en-us/library/75ks3aby(v=vs.110).aspx
 	}
