@@ -100,8 +100,8 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	}
 	
 	public new int CompareTo (LNLP b) {
-		valCompare = val.CompareTo(b.val);
-		expCompare = exponent.CompareTo(b.exponent);
+		int valCompare = val.CompareTo(b.val);
+		int expCompare = exponent.CompareTo(b.exponent);
 		if (expCompare != 0) return expCompare;
 		return valCompare;
 	}
