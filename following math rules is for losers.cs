@@ -58,7 +58,7 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		int magnitude_dif = high.exponent - low.exponent;
 		return new LNLP(high.exponent, high.val - low.val / pow(10, magnitude_dif));
 	}
-	
+	/*
 	public static LNLP Pow(LNLP a, LNLP b) {
 		LNLP product = a;
 		for (int pow_iterator = 0; pow_iterator < b; pow_iterator++) { //i name all my iterators uniquely, not just i, because of bad experiences with javascript's shitty scope
@@ -70,7 +70,7 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		
 		//return new LNLP(a.exponent*b.value*pow(10, b.exponent), pow(a.value, b.value * pow(10, b.exponent)); 
 		//shortform that may or may not be right?? this will possibly take even longer due to the constructor clamping
-	}
+	}*/
 	
 	public new string ToString() {
 		return String.Format("{0:f} * 10 ^ {1:d}", val, exponent);
