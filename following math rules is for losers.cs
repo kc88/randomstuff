@@ -3,7 +3,7 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	int exponent { public get; private set; }
 	double value { public get; private set; }
 	
-	private static final int precision = 10;
+	private static const int precision = 10;
 	
 	public LNLP (int e, double v) {
 		if (v < 0) throw new System.ArgumentException("Value cannot be negative", "v");
