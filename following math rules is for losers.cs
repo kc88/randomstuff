@@ -66,4 +66,7 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		//shortform that may or may not be right?? this will possibly take even longer due to the constructor clamping
 	}
 	
+	public string ToString() {
+		return String.Format("{0:f} * 10 ^ {1:d}");
+	}
 }
