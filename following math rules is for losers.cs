@@ -5,6 +5,10 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	
 	private static const int precision = 10;
 	
+	public LNLP (double v) {
+		LNLP(0, v);
+	}
+	
 	public LNLP (int e, double v) {
 		if (v < 0) throw new System.ArgumentException("LNLP value cannot be negative", "v");
 		exponent = e;
@@ -71,13 +75,15 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		//return new LNLP(a.exponent*b.value*pow(10, b.exponent), pow(a.value, b.value * pow(10, b.exponent)); 
 		//shortform that may or may not be right?? this will possibly take even longer due to the constructor clamping
 	}*/
-	
+	public static LNLP Pow(LNLP a, float b) {
+		return new LNLP(b*a.exponent, Pow(a.val, b));
+	}
 	public new string ToString() {
 		return String.Format("{0:f} * 10 ^ {1:d}", val, exponent);
 	}
 	
-	public static new bool Equals (LNLP a, LNLP b) {
-		return a.val == b.val && a.exponent == b.exponent;
+	public new bool Equals (LNLP b) {
+		return val == b.val && exponent == b.exponent;
 	}
 	
 	public static LNLP operator +(LNLP a, LNLP b) {
@@ -93,10 +99,10 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		return Divide(a, b);
 	}
 	public static bool operator ==(LNLP a, LNLP b) {
-		return Equals(a, b);
+		return a.Equals(b);
 	}
 	public static bool operator !=(LNLP a, LNLP b) {
-		return !Equals(a, b);
+		return !a.Equals(b);
 	}
 	
 	public new int CompareTo (LNLP b) {
