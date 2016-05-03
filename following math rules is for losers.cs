@@ -6,8 +6,9 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	private static const int precision = 10;
 	
 	public LNLP (int e, double v) {
-		if (v < 0) throw new System.ArgumentException("Value cannot be negative", "v");
-		exponent, value = e, v; //dunno if you can do this in C#
+		if (v < 0) throw new System.ArgumentException("LNLP value cannot be negative", "v");
+		exponent = e;
+		value = v;
 		while value > 10 {
 			value /= 10;
 			exponent++;
@@ -54,8 +55,8 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	}
 	
 	public static LNLP Pow(LNLP a, LNLP b) {
-		product = a;
-		for (pow_iterator = 0; pow_iterator < b; pow_iterator++) { //i name all my iterators uniquely, not just i, because of bad experiences with javascript's shitty scope
+		LNLP product = a;
+		for (int pow_iterator = 0; pow_iterator < b; pow_iterator++) { //i name all my iterators uniquely, not just i, because of bad experiences with javascript's shitty scope
 			product = LNLP.Multiply(product, b); //the equation to do this non-iteratively is hard. i assume you wont ever be doing this anyways because this returns absolutely gigantic results
 			//ie: (2 * 10^2) ^ (3 * 10^1) = 1.073 * 10^69, and this only gets more ridiculous
 			//be careful of the exponent overflowing int, high roller
