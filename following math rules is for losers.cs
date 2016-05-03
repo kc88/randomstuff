@@ -49,6 +49,7 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	public static LNLP Subtract (LNLP a, LNLP b) {
 		if (b.exponent > a.exponent) return new LNLP(0, 0.0);//no negative numbers please
 		
+		LNLP high = a.exponent > b.exponent ? a : b;
 		LNLP low = a.exponent > b.exponent ? b : a;
 		
 		if (high.exponent - precision > low.exponent)
