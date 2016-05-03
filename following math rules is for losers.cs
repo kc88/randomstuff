@@ -73,7 +73,7 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	}
 	
 	public string ToString() {
-		return String.Format("{0:f} * 10 ^ {1:d}");
+		return String.Format("{0:f} * 10 ^ {1:d}", val, exponent);
 	}
 	
 	public static bool Equals (LNLP a, LNLP b) {
@@ -99,4 +99,17 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		return !Equals(a, b);
 	}
 	
+	public static int CompareTo (LNLP b) {
+		valCompare = val.CompareTo(b.val);
+		expCompare = exponent.CompareTo(b.exponent);
+		if (expCompare != 0) return expCompare;
+		return valCompare;
+	}
+	
+	public static bool operator >(LNLP a, LNLP b) {
+		return a.CompareTo(b) > 0;
+	}
+	public static bool operator <(LNLP a, LNLP b) {
+		return a.CompareTo(b) < 0;
+	}
 }
