@@ -19,7 +19,11 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		}
 		//might have rounding errors for numbers that are very far off from the 1-10 scale before clamping
 		//above scales value to 1.00 thru 9.99 and changes exponent to fit
-		val = Math.Round(value, precision-1); //round to precision-1 decimal places. docs https://msdn.microsoft.com/en-us/library/75ks3aby(v=vs.110).aspx
+		//val = Math.Round(value, precision-1); //round to precision-1 decimal places. docs https://msdn.microsoft.com/en-us/library/75ks3aby(v=vs.110).aspx
+	
+		val *= Math.Pow(10, precision-1);
+		val = Mathf.Round(val);
+		val /= Math.Pow(10, precision-1);
 	}
 	
 	public static LNLP Multiply (LNLP a, LNLP b) {
