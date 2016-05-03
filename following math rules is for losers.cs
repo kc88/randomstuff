@@ -1,6 +1,6 @@
 using System;
 
-class LNLP
+class LNLP : IComparable
 { //playing loose and fast with the rules of mathematics //LongNumberLowPrecision, you may wish to refactor this
   //fyi does not support negative numbers - things will crash
     public int exponent { get; private set; }
@@ -8,9 +8,7 @@ class LNLP
 
     private const int precision = 10;
 
-    public LNLP(double v)
-    {
-        LNLP(0, v);
+    public LNLP(double v) : this(0, v) {
     }
 
     public LNLP(int e, double v)
@@ -84,16 +82,16 @@ class LNLP
 		//return new LNLP(a.exponent*b.value*pow(10, b.exponent), pow(a.value, b.value * pow(10, b.exponent)); 
 		//shortform that may or may not be right?? this will possibly take even longer due to the constructor clamping
 	}*/
-    public static LNLP Pow(LNLP a, float b)
+    public static LNLP Pow(LNLP a, double b)
     {
-        return new LNLP(b * a.exponent, Math.Pow(a.val, b));
+        return new LNLP(b * a.exponent, Math.Pow((double) a.val, b));
     }
     public new string ToString()
     {
         return String.Format("{0:f} * 10 ^ {1:d}", val, exponent);
     }
 
-    public new bool Equals(LNLP b)
+    public override bool Equals(LNLP b)
     {
         return val == b.val && exponent == b.exponent;
     }
@@ -123,7 +121,7 @@ class LNLP
         return !a.Equals(b);
     }
 
-    public new int CompareTo(LNLP b)
+    public int CompareTo(LNLP b)
     {
         int valCompare = val.CompareTo(b.val);
         int expCompare = exponent.CompareTo(b.exponent);
