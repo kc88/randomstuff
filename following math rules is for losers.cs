@@ -1,13 +1,13 @@
-class LargeNumberLowPrecision { //playing loose and fast with the rules of mathematics
+class LNLP { //playing loose and fast with the rules of mathematics //LongNumberLowPrecision, you may wish to refactor this
 	//fyi does not support negative numbers - things will crash
 	int exponent { public get; private set; }
 	double value { public get; private set; }
 	
 	private static final int precision = 10;
 	
-	public LNLP (e, v) throws ValueError {
-		if (v < 0) throw new ValueError(); //uhhh not sure of c#'s syntax here'
-		exponent, value = e, v;
+	public LNLP (int e, double v) {
+		if (v < 0) throw new System.ArgumentException("Value cannot be negative", "v");
+		exponent, value = e, v; //dunno if you can do this in C#
 		while value > 10 {
 			value /= 10;
 			exponent++;
@@ -21,16 +21,16 @@ class LargeNumberLowPrecision { //playing loose and fast with the rules of mathe
 		value = Math.Round(value, precision-1); //round to precision-1 decimal places. docs https://msdn.microsoft.com/en-us/library/75ks3aby(v=vs.110).aspx
 	}
 	
-	public static Multiply (LNLP a, LNLP b) {
+	public static LNLP Multiply (LNLP a, LNLP b) {
 		return new LNLP (a.exponent + b.exponent, a.value * b.value); //constructor clamps value between 1 and 9.99 if product of values is higher
 	}
 	
-	public static Divide (a, b) {
+	public static LNLP Divide (LNLP a, LNLP b) {
 		if (b.exponent - precision > a.exponent) return new LNLP (0, 0); //dividing a small number by a very large number is approximately zero, check value before continuing with arithmetic
 		return new LNLP(a.exponent - b.exponent, a.value / b.value); //constructor will scale if the value is less than one
 	}
 	
-	public static Add (LNLP a, b) {
+	public static LNLP Add (LNLP a, LNLP b) {
 		LNLP high = a.exponent > b.exponent ? a : b;
 		LNLP low = a.exponent > b.exponent ? b : a;
 		
@@ -41,8 +41,8 @@ class LargeNumberLowPrecision { //playing loose and fast with the rules of mathe
 		return new LNLP(high.exponent, high.value + low.value / pow(10, magnitude_dif));
 	}
 	
-	public static Subtract (a, b) {
-		if (b.exponent > a.exponent) return 0;//no negative numbers please
+	public static LNLP Subtract (LNLP a, LNLP b) {
+		if (b.exponent > a.exponent) return new LNLP(0, 0.0);//no negative numbers please
 		
 		LNLP low = a.exponent > b.exponent ? b : a;
 		
@@ -53,7 +53,7 @@ class LargeNumberLowPrecision { //playing loose and fast with the rules of mathe
 		return new LNLP(high.exponent, high.value - low.value / pow(10, magnitude_dif));
 	}
 	
-	public static Pow(a, b) {
+	public static LNLP Pow(LNLP a, LNLP b) {
 		product = a;
 		for (pow_iterator = 0; pow_iterator < b; pow_iterator++) { //i name all my iterators uniquely, not just i, because of bad experiences with javascript's shitty scope
 			product = LNLP.Multiply(product, b); //the equation to do this non-iteratively is hard. i assume you wont ever be doing this anyways because this returns absolutely gigantic results
