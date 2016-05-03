@@ -70,4 +70,28 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 	public string ToString() {
 		return String.Format("{0:f} * 10 ^ {1:d}");
 	}
+	
+	public static bool Equals (LNLP a, LNLP b) {
+		return a.val == b.val && a.exponent == b.exponent;
+	}
+	
+	public static LNLP operator +(LNLP a, LNLP b) {
+		return Add(a, b);
+	}
+	public static LNLP operator -(LNLP a, LNLP b) {
+		return Subtract(a, b);
+	}
+	public static LNLP operator *(LNLP a, LNLP b) {
+		return Multiply(a, b);
+	}
+	public static LNLP operator /(LNLP a, LNLP b) {
+		return Divide(a, b);
+	}
+	public static bool operator ==(LNLP a, LNLP b) {
+		return Equals(a, b);
+	}
+	public static bool operator !=(LNLP a, LNLP b) {
+		return !Equals(a, b);
+	}
+	
 }
