@@ -1,34 +1,34 @@
 class LNLP { //playing loose and fast with the rules of mathematics //LongNumberLowPrecision, you may wish to refactor this
 	//fyi does not support negative numbers - things will crash
 	int exponent { public get; private set; }
-	double value { public get; private set; }
+	double val { public get; private set; }
 	
 	private static const int precision = 10;
 	
 	public LNLP (int e, double v) {
 		if (v < 0) throw new System.ArgumentException("LNLP value cannot be negative", "v");
 		exponent = e;
-		value = v;
-		while value > 10 {
-			value /= 10;
+		val = v;
+		while val > 10 {
+			val /= 10;
 			exponent++;
 		}
-		while value < 1 {
-			value *= 10;
+		while val < 1 {
+			val *= 10;
 			exponent--;
 		}
 		//might have rounding errors for numbers that are very far off from the 1-10 scale before clamping
 		//above scales value to 1.00 thru 9.99 and changes exponent to fit
-		value = Math.Round(value, precision-1); //round to precision-1 decimal places. docs https://msdn.microsoft.com/en-us/library/75ks3aby(v=vs.110).aspx
+		val = Math.Round(value, precision-1); //round to precision-1 decimal places. docs https://msdn.microsoft.com/en-us/library/75ks3aby(v=vs.110).aspx
 	}
 	
 	public static LNLP Multiply (LNLP a, LNLP b) {
-		return new LNLP (a.exponent + b.exponent, a.value * b.value); //constructor clamps value between 1 and 9.99 if product of values is higher
+		return new LNLP (a.exponent + b.exponent, a.val * b.val); //constructor clamps value between 1 and 9.99 if product of values is higher
 	}
 	
 	public static LNLP Divide (LNLP a, LNLP b) {
 		if (b.exponent - precision > a.exponent) return new LNLP (0, 0); //dividing a small number by a very large number is approximately zero, check value before continuing with arithmetic
-		return new LNLP(a.exponent - b.exponent, a.value / b.value); //constructor will scale if the value is less than one
+		return new LNLP(a.exponent - b.exponent, a.val / b.val); //constructor will scale if the value is less than one
 	}
 	
 	public static LNLP Add (LNLP a, LNLP b) {
@@ -36,10 +36,10 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		LNLP low = a.exponent > b.exponent ? b : a;
 		
 		if (high.exponent - precision > low.exponent)
-			return new LNLP(high.exponent, high.value);
+			return new LNLP(high.exponent, high.val); //adding a tiny number to a large number is approx the large number
 		
 		int magnitude_dif = high.exponent - low.exponent;
-		return new LNLP(high.exponent, high.value + low.value / pow(10, magnitude_dif));
+		return new LNLP(high.exponent, high.val + low.val / pow(10, magnitude_dif));
 	}
 	
 	public static LNLP Subtract (LNLP a, LNLP b) {
@@ -48,10 +48,10 @@ class LNLP { //playing loose and fast with the rules of mathematics //LongNumber
 		LNLP low = a.exponent > b.exponent ? b : a;
 		
 		if (high.exponent - precision > low.exponent)
-			return new LNLP(high.exponent, high.value);
+			return new LNLP(high.exponent, high.val);
 		
 		int magnitude_dif = high.exponent - low.exponent;
-		return new LNLP(high.exponent, high.value - low.value / pow(10, magnitude_dif));
+		return new LNLP(high.exponent, high.val - low.val / pow(10, magnitude_dif));
 	}
 	
 	public static LNLP Pow(LNLP a, LNLP b) {
