@@ -1,6 +1,9 @@
 using System;
+using System.Text.RegularExpressions;
 
-class LNLP : IComparable
+
+[Serializable]
+class LNLP :IComparable<LNLP>
 { //playing loose and fast with the rules of mathematics //LongNumberLowPrecision, you may wish to refactor this
   //fyi does not support negative numbers - things will crash
     public int exponent { get; private set; }
@@ -8,7 +11,8 @@ class LNLP : IComparable
 
     private const int precision = 10;
 
-    public LNLP(double v) : this(0, v) {
+    public LNLP(double v) : this(0, v)
+    {
     }
 
     public LNLP(int e, double v)
@@ -16,11 +20,13 @@ class LNLP : IComparable
         if (v < 0) throw new System.ArgumentException("LNLP value cannot be negative", "v");
         exponent = e;
         val = v;
-        while (val > 10) {
+        while (val > 10)
+        {
             val /= 10;
             exponent++;
         }
-        while (val < 1) {
+        while (val < 1)
+        {
             val *= 10;
             exponent--;
         }
@@ -84,15 +90,30 @@ class LNLP : IComparable
 	}*/
     public static LNLP Pow(LNLP a, double b)
     {
-        return new LNLP(b * a.exponent, Math.Pow((double) a.val, b));
+        double decExponent = b * a.exponent; //get the exponent, ill send you the math on this
+        int expIpart = (int)Math.Floor(decExponent); //integral part of exponent
+        double exponentFpart = decExponent - expIpart; //fractional part of exponent
+
+        return new LNLP(expIpart, Math.Pow((double)a.val, b) * Math.Pow(10, exponentFpart));
     }
     public new string ToString()
     {
         return String.Format("{0:f} * 10 ^ {1:d}", val, exponent);
     }
 
-    public override bool Equals(LNLP b)
+    public static LNLP FromString(string s)
     {
+        var reg = Regex.Match(s, "(?<v>\A\d\.\d*) \* 10 \^ (?<e>\d*\z)");
+        return new LNLP(Int32.Parse(reg.Groups["e"].Value), Double.Parse(reg.Groups["v"].Value));
+    }
+    
+    public override bool Equals(Object o)
+    {
+        if (!(o is LNLP))
+        {
+            return false;
+        }
+        LNLP b = (LNLP)o;
         return val == b.val && exponent == b.exponent;
     }
 
@@ -136,5 +157,27 @@ class LNLP : IComparable
     public static bool operator <(LNLP a, LNLP b)
     {
         return a.CompareTo(b) < 0;
+    }
+
+    public override int GetHashCode()
+    {
+        return exponent.GetHashCode() * val.GetHashCode();
+    }
+
+    public static implicit operator LNLP(int v)
+    {
+        return new LNLP((double)v);
+    }
+    public static implicit operator LNLP(float v)
+    {
+        return new LNLP(v);
+    }
+    public static explicit operator int(LNLP a)
+    {
+        return (int)a.val * (int)Math.Pow(10, a.exponent);
+    }
+    public static explicit operator float(LNLP a)
+    {
+        return (float)a.val * (float)Math.Pow(10, a.exponent);
     }
 }
